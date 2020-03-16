@@ -1,5 +1,7 @@
 {
   "block.seblock.sebonium": "Sebonium Block",
+  "item.seblock.sebonium_ingot": "Sebonium Ingot",
+
   "_comment": "Creative Tabs",
   "itemGroup.seblock": "Seblock"
 }

@@ -2,15 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "xxx",
-    "x#x",
+    "xxx",
     "xxx"
   ],
   "key": {
-    "#": {
-      "tag": "minecraft:planks"
-    },
     "x": {
-      "item": "minecraft:cobblestone"
+      "item": "seblock:sebonium_ingot"
     }
   },
   "result": {
