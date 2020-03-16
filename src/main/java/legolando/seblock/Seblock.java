@@ -4,6 +4,7 @@ import legolando.seblock.block.ModBlocks;
 import legolando.seblock.block.SeboniumBlock;
 import legolando.seblock.setup.ClientProxy;
 import legolando.seblock.setup.IProxy;
+import legolando.seblock.setup.ModSetup;
 import legolando.seblock.setup.ServerProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @Mod("seblock")
 public class Seblock {
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
+    public static ModSetup setup = new ModSetup();
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -41,7 +43,8 @@ public class Seblock {
     private void setup(final FMLCommonSetupEvent event) {
         LOGGER.info("Started Seblock preinit");
 
-
+        setup.init();
+        proxy.init();
 
         LOGGER.info("Finished Seblock preinit");
     }
@@ -67,8 +70,9 @@ public class Seblock {
             // register a new block here
             LOGGER.info("Started Register Items job");
 
+            Item.Properties properties = new Item.Properties().group(setup.itemGroup);
             itemRegistryEvent.getRegistry().registerAll(
-                    new BlockItem(ModBlocks.seboniumBlock, new Item.Properties()).setRegistryName("sebonium")
+                    new BlockItem(ModBlocks.seboniumBlock, properties).setRegistryName("sebonium")
             );
 
             LOGGER.info("Finished Register Items job");
