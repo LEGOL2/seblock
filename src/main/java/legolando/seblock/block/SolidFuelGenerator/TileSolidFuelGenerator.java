@@ -1,6 +1,5 @@
-package legolando.seblock.tile;
+package legolando.seblock.block.SolidFuelGenerator;
 
-import legolando.seblock.container.ContainerSolidFuelGenerator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

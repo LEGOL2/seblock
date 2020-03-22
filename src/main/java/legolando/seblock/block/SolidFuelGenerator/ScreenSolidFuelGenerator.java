@@ -1,8 +1,7 @@
-package legolando.seblock.screen;
+package legolando.seblock.block.SolidFuelGenerator;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import legolando.seblock.Seblock;
-import legolando.seblock.container.ContainerSolidFuelGenerator;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;

@@ -1,7 +1,8 @@
 package legolando.seblock.block;
 
-import legolando.seblock.container.ContainerSolidFuelGenerator;
-import legolando.seblock.tile.TileSolidFuelGenerator;
+import legolando.seblock.block.SolidFuelGenerator.BlockSolidFuelGenerator;
+import legolando.seblock.block.SolidFuelGenerator.ContainerSolidFuelGenerator;
+import legolando.seblock.block.SolidFuelGenerator.TileSolidFuelGenerator;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.registries.ObjectHolder;

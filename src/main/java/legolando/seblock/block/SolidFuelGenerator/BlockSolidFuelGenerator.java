@@ -1,7 +1,5 @@
-package legolando.seblock.block;
+package legolando.seblock.block.SolidFuelGenerator;
 
-import legolando.seblock.Seblock;
-import legolando.seblock.tile.TileSolidFuelGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

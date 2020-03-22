@@ -1,7 +1,7 @@
 package legolando.seblock.setup;
 
 import legolando.seblock.block.ModBlocks;
-import legolando.seblock.screen.ScreenSolidFuelGenerator;
+import legolando.seblock.block.SolidFuelGenerator.ScreenSolidFuelGenerator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;

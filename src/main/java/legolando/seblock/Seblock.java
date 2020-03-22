@@ -1,15 +1,15 @@
 package legolando.seblock;
 
-import legolando.seblock.block.BlockSolidFuelGenerator;
+import legolando.seblock.block.SolidFuelGenerator.BlockSolidFuelGenerator;
 import legolando.seblock.block.ModBlocks;
 import legolando.seblock.block.SeboniumBlock;
-import legolando.seblock.container.ContainerSolidFuelGenerator;
+import legolando.seblock.block.SolidFuelGenerator.ContainerSolidFuelGenerator;
 import legolando.seblock.item.ItemSeboniumIngot;
 import legolando.seblock.setup.ClientProxy;
 import legolando.seblock.setup.IProxy;
 import legolando.seblock.setup.ModSetup;
 import legolando.seblock.setup.ServerProxy;
-import legolando.seblock.tile.TileSolidFuelGenerator;
+import legolando.seblock.block.SolidFuelGenerator.TileSolidFuelGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;

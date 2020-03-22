@@ -1,4 +1,4 @@
-package legolando.seblock.container;
+package legolando.seblock.block.SolidFuelGenerator;
 
 import legolando.seblock.block.ModBlocks;
 import net.minecraft.entity.player.PlayerEntity;
