@@ -1,5 +1,6 @@
 package legolando.seblock.block.SolidFuelGenerator;
 
+import legolando.seblock.tools.CustomEnergyStorage;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -15,6 +16,9 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -26,6 +30,8 @@ import static legolando.seblock.block.ModBlocks.tileSolidFuelGenerator;
 
 public class TileSolidFuelGenerator extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandler);
+    private LazyOptional<IEnergyStorage> energy = LazyOptional.of(this::createEnergy);
+    private int counter;
 
     public TileSolidFuelGenerator() {
         super(tileSolidFuelGenerator);
@@ -35,6 +41,9 @@ public class TileSolidFuelGenerator extends TileEntity implements ITickableTileE
     public void read(CompoundNBT compound) {
         CompoundNBT invTag = compound.getCompound("inv");
         handler.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(invTag));
+
+        CompoundNBT energyTag = compound.getCompound("energy");
+        energy.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(energyTag));
         super.read(compound);
     }
 
@@ -43,6 +52,10 @@ public class TileSolidFuelGenerator extends TileEntity implements ITickableTileE
         handler.ifPresent(h -> {
             CompoundNBT compound = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
             tag.put("inv", compound);
+        });
+        energy.ifPresent(h -> {
+            CompoundNBT compound = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
+            tag.put("energy", compound);
         });
 
         return super.write(tag);
@@ -54,13 +67,27 @@ public class TileSolidFuelGenerator extends TileEntity implements ITickableTileE
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return handler.cast();
         }
+        if (cap == CapabilityEnergy.ENERGY) {
+            return energy.cast();
+        }
 
         return super.getCapability(cap, side);
     }
 
     @Override
     public void tick() {
-
+        if (counter > 0) {
+            counter--;
+            energy.ifPresent(e -> ((CustomEnergyStorage) e).addEnergy(40));
+        } else {
+            handler.ifPresent(h -> {
+                ItemStack stack = h.getStackInSlot(0);
+                if (stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL) {
+                    h.extractItem(0, 1, false);
+                    counter = 1200;
+                }
+            });
+        }
     }
 
     private IItemHandler createHandler() {
@@ -90,5 +117,9 @@ public class TileSolidFuelGenerator extends TileEntity implements ITickableTileE
     @Override
     public Container createMenu(int windowID, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         return new ContainerSolidFuelGenerator(windowID, world, pos, playerInventory, playerEntity);
+    }
+
+    private IEnergyStorage createEnergy() {
+        return new CustomEnergyStorage(100000, 0);
     }
 }
