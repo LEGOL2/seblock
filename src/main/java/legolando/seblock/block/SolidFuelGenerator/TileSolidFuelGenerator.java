@@ -17,7 +17,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -26,6 +25,9 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static legolando.seblock.Config.*;
 import static legolando.seblock.block.ModBlocks.tileSolidFuelGenerator;
 
 public class TileSolidFuelGenerator extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
@@ -78,20 +80,58 @@ public class TileSolidFuelGenerator extends TileEntity implements ITickableTileE
     public void tick() {
         if (counter > 0) {
             counter--;
-            energy.ifPresent(e -> ((CustomEnergyStorage) e).addEnergy(40));
+            if (counter % 5 == 0) {
+                energy.ifPresent(e -> ((CustomEnergyStorage) e).addEnergy(SOLID_FUEL_GENERATOR_GENERATE.get() * 5));
+            }
+            markDirty();
         } else {
             handler.ifPresent(h -> {
                 ItemStack stack = h.getStackInSlot(0);
                 if (stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL) {
                     h.extractItem(0, 1, false);
-                    counter = 1200;
+                    counter = SOLID_FUEL_GENERATOR_BURN_TIME.get();
                 }
             });
         }
+
+        sendOutPower();
+    }
+
+    private void sendOutPower() {
+        energy.ifPresent(energy -> {
+            AtomicInteger capacity = new AtomicInteger(energy.getEnergyStored());
+            if (capacity.get() > 0) {
+                for (Direction direction : Direction.values()) {
+                    TileEntity te = world.getTileEntity(pos.offset(direction));
+                    if (te != null) {
+                        boolean doContinue = te.getCapability(CapabilityEnergy.ENERGY, direction).map(handler -> {
+                                    if (handler.canReceive()) {
+                                        int received = handler.receiveEnergy(Math.min(capacity.get(), 100), false);
+                                        capacity.addAndGet(-received);
+                                        ((CustomEnergyStorage) energy).consumeEnergy(received);
+                                        markDirty();
+                                        return capacity.get() > 0;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                        ).orElse(true);
+                        if (!doContinue) {
+                            return;
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private IItemHandler createHandler() {
         return new ItemStackHandler(1) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                markDirty();
+            }
+
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 return stack.getItem() == Items.COAL;
@@ -120,6 +160,6 @@ public class TileSolidFuelGenerator extends TileEntity implements ITickableTileE
     }
 
     private IEnergyStorage createEnergy() {
-        return new CustomEnergyStorage(100000, 0);
+        return new CustomEnergyStorage(SOLID_FUEL_GENERATOR_MAXPOWER.get(), 0);
     }
 }
