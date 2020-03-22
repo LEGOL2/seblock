@@ -1,5 +1,6 @@
 package legolando.seblock.setup;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 public class ServerProxy implements IProxy {
@@ -10,6 +11,11 @@ public class ServerProxy implements IProxy {
 
     @Override
     public World getClientWorld() {
+        throw new IllegalStateException("Run this only on the client!!!");
+    }
+
+    @Override
+    public PlayerEntity getClientPlayer() {
         throw new IllegalStateException("Run this only on the client!!!");
     }
 }

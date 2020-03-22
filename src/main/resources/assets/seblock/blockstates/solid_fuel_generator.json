@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "seblock:block/solid_fuel_generator"
+    },
+    "facing=south": {
+      "model": "seblock:block/solid_fuel_generator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "seblock:block/solid_fuel_generator",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "seblock:block/solid_fuel_generator",
+      "y": 90
+    },
+    "facing=up": {
+      "model": "seblock:block/solid_fuel_generator"
+    },
+    "facing=down": {
+      "model": "seblock:block/solid_fuel_generator"
+    }
+  }
+}
