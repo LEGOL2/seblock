@@ -1,25 +1,46 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,powered=false": {
       "model": "seblock:block/solid_fuel_generator"
     },
-    "facing=south": {
+    "facing=south,powered=false": {
       "model": "seblock:block/solid_fuel_generator",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,powered=false": {
       "model": "seblock:block/solid_fuel_generator",
       "y": 270
     },
-    "facing=east": {
+    "facing=east,powered=false": {
       "model": "seblock:block/solid_fuel_generator",
       "y": 90
     },
-    "facing=up": {
+    "facing=up,powered=false": {
       "model": "seblock:block/solid_fuel_generator"
     },
-    "facing=down": {
+    "facing=down,powered=false": {
       "model": "seblock:block/solid_fuel_generator"
+    },
+    "facing=north,powered=true": {
+      "model": "seblock:block/solid_fuel_generator_on"
+    },
+    "facing=south,powered=true": {
+      "model": "seblock:block/solid_fuel_generator_on",
+      "y": 180
+    },
+    "facing=west,powered=true": {
+      "model": "seblock:block/solid_fuel_generator_on",
+      "y": 270
+    },
+    "facing=east,powered=true": {
+      "model": "seblock:block/solid_fuel_generator_on",
+      "y": 90
+    },
+    "facing=up,powered=true": {
+      "model": "seblock:block/solid_fuel_generator_on"
+    },
+    "facing=down,powered=true": {
+      "model": "seblock:block/solid_fuel_generator_on"
     }
   }
 }

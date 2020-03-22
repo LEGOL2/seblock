@@ -33,6 +33,11 @@ public class BlockSolidFuelGenerator extends Block {
         setRegistryName("solid_fuel_generator");
     }
 
+    @Override
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+        return state.get(BlockStateProperties.POWERED) ? 15 : 0;
+    }
+
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
@@ -73,6 +78,6 @@ public class BlockSolidFuelGenerator extends Block {
 
     @Override
     public void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(BlockStateProperties.FACING);
+        builder.add(BlockStateProperties.FACING, BlockStateProperties.POWERED);
     }
 }

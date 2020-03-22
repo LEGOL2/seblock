@@ -1,6 +1,7 @@
 package legolando.seblock.block.SolidFuelGenerator;
 
 import legolando.seblock.tools.CustomEnergyStorage;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -8,6 +9,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -78,13 +80,18 @@ public class TileSolidFuelGenerator extends TileEntity implements ITickableTileE
 
     @Override
     public void tick() {
+        if (world.isRemote) {
+            return;
+        }
+
         if (counter > 0) {
             counter--;
             if (counter % 5 == 0) {
                 energy.ifPresent(e -> ((CustomEnergyStorage) e).addEnergy(SOLID_FUEL_GENERATOR_GENERATE.get() * 5));
             }
             markDirty();
-        } else {
+        }
+        if (counter <= 0) {
             handler.ifPresent(h -> {
                 ItemStack stack = h.getStackInSlot(0);
                 if (stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL) {
@@ -92,6 +99,11 @@ public class TileSolidFuelGenerator extends TileEntity implements ITickableTileE
                     counter = SOLID_FUEL_GENERATOR_BURN_TIME.get();
                 }
             });
+        }
+
+        BlockState blockState = world.getBlockState(pos);
+        if (blockState.get(BlockStateProperties.POWERED) != counter > 0) {
+            world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, counter > 0), 3);
         }
 
         sendOutPower();

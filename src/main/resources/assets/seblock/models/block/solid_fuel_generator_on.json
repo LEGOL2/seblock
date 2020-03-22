@@ -1,0 +1,8 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "seblock:block/solid_fuel_generator_top",
+    "front": "seblock:block/solid_fuel_generator_front_on",
+    "side": "seblock:block/solid_fuel_generator_side"
+  }
+}
