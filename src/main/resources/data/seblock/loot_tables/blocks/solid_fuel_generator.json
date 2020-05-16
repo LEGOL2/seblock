@@ -2,7 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "pool1",
+      "name": "solidFuelGenerator",
       "rolls": 1,
       "entries": [
         {
@@ -39,11 +39,6 @@
             }
           ],
           "name": "seblock:solid_fuel_generator"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
         }
       ]
     }
